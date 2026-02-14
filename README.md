@@ -11,7 +11,7 @@ Um sistema de gerenciamento de produtos com autenticação JWT, desenvolvido em 
 -  **Procurar produto via ID** - Busca específica por identificador
 -  **Deletar produto** - Remoção de produtos do sistema
 
-## 🛠️ Tecnologias Utilizadas
+##  Tecnologias Utilizadas
 
 - **Java 17**
 - **Spring Boot 4.0.2**
@@ -54,7 +54,7 @@ O sistema utiliza autenticação JWT. Para acessar endpoints protegidos:
 2. Copie o token retornado
 3. Adicione o token na aba Authorization -> Auth Type (Bearer Token) caso usar Postman
 
-## 📚 Endpoints Principais
+##  Endpoints Principais
 
 ### Autenticação
 - `POST /auth/register` - Registrar novo usuário
@@ -66,16 +66,16 @@ O sistema utiliza autenticação JWT. Para acessar endpoints protegidos:
 - `GET /produtos/{id}` - Buscar produto por ID (requer autenticação)
 - `DELETE /produtos/{id}` - Deletar produto (requer autenticação)
 
-## ⚠️ Principais Desafios do Projeto
+##  Principais Desafios do Projeto
 
 ### 1. `parseClaimsJws` ≠ `parseClaimsJwt`
 > **O mais frustrante:** Descobrir que a autenticação falhava por causa de uma única letra diferente!
 
 ```java
-// ❌ ERRADO - para tokens NÃO assinados
+//  ERRADO - para tokens NÃO assinados
 .parseClaimsJwt(token)
 
-// ✅ CORRETO - para tokens assinados
+//  CORRETO - para tokens assinados
 .parseClaimsJws(token)  // Note o "s" no final!
 ```
 
@@ -85,11 +85,11 @@ A letra **"s"** no final faz toda a diferença. Use `parseClaimsJws` quando o to
 > **Breaking change:** A injeção do `UserDetailsService` mudou entre versões do Spring Security
 
 ```java
-// ❌ Forma antiga
+//  Forma antiga
 DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 authProvider.setUserDetailsService(userDetailsService);
 
-// ✅ Forma nova
+//  Forma nova
 DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
 ```
 
@@ -99,31 +99,31 @@ DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetai
 > **Modernização:** A sintaxe lambda foi substituída por method reference
 
 ```java
-// ⚠️ Forma antiga (ainda funciona)
+//  Forma antiga (ainda funciona)
 http.csrf(csrf -> csrf.disable())
 
-// ✅ Forma moderna (recomendada)
+//  Forma moderna (recomendada)
 http.csrf(AbstractHttpConfigurer::disable)
 ```
 
 Ambas funcionam, mas a **method reference** é a forma idiomática do Spring Security 6+.
 
-## 🔒 Segurança
+##  Segurança
 
 - Senhas criptografadas com **BCrypt**
 - Autenticação stateless via **JWT**
 - Tokens com expiração configurável (padrão: 24 horas)
 - Endpoints protegidos via Spring Security
 
-## 📦 Dependências Principais
+##  Dependências Principais
 
 Veja no arquivo pom.xml
 
-## 📄 Licença
+##  Licença
 
 Este projeto foi desenvolvido para fins educacionais.
 
-## 👨‍💻 Autor
+##  Autor
 
 Código original por Matheus Leandro Ferreira no CURSO GRATIS SPRING BOOT PARA INICIANTES ☕👩🏻‍💻 | 2025
 
