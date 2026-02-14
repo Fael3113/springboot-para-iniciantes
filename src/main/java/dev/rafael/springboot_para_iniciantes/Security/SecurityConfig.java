@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -27,8 +26,8 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-		http.csrf(AbstractHttpConfigurer::disable) //csrf -> csrf.disable() também funciona, mas passou a ser desnecessária
+	public SecurityFilterChain securityFilterChain(HttpSecurity http){
+		http.csrf(AbstractHttpConfigurer::disable)
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**").permitAll().anyRequest().authenticated())
 				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -37,10 +36,6 @@ public class SecurityConfig {
 
 	@Bean
 	public AuthenticationManager authenticationManager(){
-		//Antes era assim:
-		//DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-		//authProvider.setUserDetailsService(userDetailsService);
-		//Agora é assim:
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
 		authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
 		return new ProviderManager(authProvider);
